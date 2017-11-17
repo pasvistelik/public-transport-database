@@ -18,6 +18,7 @@ class TransportDatabase {
     }
     static async getNextFreeIndexInPositionsTable(){
       const results = await executeQuery("SELECT MAX(position_id) FROM gps_positions_archive AS solution");
+      console.log(results[0]);
       console.log(results[0].solution);
       return results[0].solution;
     }
