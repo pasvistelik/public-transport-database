@@ -32,8 +32,8 @@ class TransportDatabase {
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
         request += " ("
         + currentItem.positionId + ", "
-        + currentItem.previousPositionId + ", "
-        + currentItem.nextPositionId + ", "
+        + (currentItem.previousPositionId == null ? "\"null\"" : currentItem.previousPositionId) + ", "
+        + (currentItem.nextPositionId == null ? "\"null\"" : currentItem.nextPositionId) + ", "
         + currentItem.lat + ", "
         + currentItem.lng + ", "
         + (currentItem.vehicleId == null ? "\"null\"" : currentItem.vehicleId) + ", "
@@ -61,7 +61,7 @@ async function executeQuery(query){
     connection.connect();
     var promise = new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
-        if (error) throw error;
+        if (error) reject(error);
         console.log(results);
         resolve(results);
       });
@@ -70,9 +70,10 @@ async function executeQuery(query){
   }
   catch(e){
     console.log(e);
+    return null;
   }
   finally{
-    connection.end();
+    if(connection != null) connection.end();
   }
 }
 
