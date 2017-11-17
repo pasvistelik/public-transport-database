@@ -42,7 +42,7 @@ class TransportDatabase {
         + currentItem.timeSeconds + ", "
         + (currentItem.routeId == null ? "\"null\"" : currentItem.routeId) + ", "
         + (currentItem.wayId == null ? "\"null\"" : currentItem.wayId) + ", "
-        + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId) + ", "
+        + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId)
         + "),";
       }
       request = request.slice(0, -1);
