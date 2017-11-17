@@ -1,0 +1,38 @@
+{
+  "name": "public-transport-database",
+  "version": "1.0.0",
+  "main": "lib/database.js",
+  "scripts": {
+    "build": "npm update && babel src --out-dir lib",
+    "prepublish": "npm run build",
+    "test": "npm run build && node lib/database.js"
+  },
+  "author": "Andrey Pasvistelik",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pasvistelik/public-transport-database.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pasvistelik/public-transport-database/issues"
+  },
+  "homepage": "https://github.com/pasvistelik/public-transport-database#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-plugin-transform-regenerator": "^6.24.1",
+    "babel-polyfill": "^6.23.0",
+    "rimraf": "^2.6.1",
+    "node-fetch": "^1.7.1"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "mysql": "^2.15.0"
+  },
+  "description": ""
+}
