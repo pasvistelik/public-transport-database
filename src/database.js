@@ -5,7 +5,7 @@ var freeIndexInPositionsTable = 0;
 class TransportDatabase {
     static async useConnection(conn){
       connection = conn;
-      await getNextFreeIndexInPositionsTable()
+      await TransportDatabase.getNextFreeIndexInPositionsTable()
     }
     constructor(){
         throw new Error("TransportDatabase is a static class!");
