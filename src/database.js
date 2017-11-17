@@ -3,23 +3,23 @@ var connection = null;
 var freeIndexInPositionsTable = 0;
 
 class TransportDatabase {
-    async useConnection(conn){
+    static async useConnection(conn){
       connection = conn;
       await getNextFreeIndexInPositionsTable()
     }
     constructor(){
         throw new Error("TransportDatabase is a static class!");
     }
-    async getPositionsArchive(){
+    static async getPositionsArchive(){
       //...
       return await executeQuery("SELECT * from gps_positions_archive");
     }
-    async getNextFreeIndexInPositionsTable(){
+    static async getNextFreeIndexInPositionsTable(){
       const result = await executeQuery("SELECT MAX(position_id) FROM gps_positions_archive");
       console.log(result);
       return result;
     }
-    async pushPositionsInPositionsTable(positions){
+    static async pushPositionsInPositionsTable(positions){
       let request = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
