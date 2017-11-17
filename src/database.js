@@ -36,13 +36,13 @@ class TransportDatabase {
         + currentItem.nextPositionId + ", "
         + currentItem.lat + ", "
         + currentItem.lng + ", "
-        + (currentItem.vehicleId == null ? "null" : currentItem.vehicleId) + ", "
+        + (currentItem.vehicleId == null ? "\"null\"" : currentItem.vehicleId) + ", "
         + "\"" + currentItem.dateDDMMYY + "\", "
         + currentItem.dayOfWeek + ", "
         + currentItem.timeSeconds + ", "
-        + (currentItem.routeId == null ? "null" : currentItem.routeId) + ", "
-        + (currentItem.wayId == null ? "null" : currentItem.wayId) + ", "
-        + (currentItem.tripId == null ? "null" : currentItem.tripId) + ", "
+        + (currentItem.routeId == null ? "\"null\"" : currentItem.routeId) + ", "
+        + (currentItem.wayId == null ? "\"null\"" : currentItem.wayId) + ", "
+        + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId) + ", "
         + "),";
       }
       request = request.slice(0, -1);
