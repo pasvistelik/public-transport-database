@@ -7,7 +7,9 @@ class TransportDatabase {
       connection = conn;
 
       let index = await TransportDatabase.getNextFreeIndexInPositionsTable();
+      await TransportDatabase.getNextFreeIndexInPositionsTable();//...
       freeIndexInPositionsTable = (index == null) ? 0 : index + 1
+      console.log("freeIndexInPositionsTable = "+freeIndexInPositionsTable);
     }
     constructor(){
         throw new Error("TransportDatabase is a static class!");
