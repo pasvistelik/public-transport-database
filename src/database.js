@@ -5,7 +5,9 @@ var freeIndexInPositionsTable = 0;
 class TransportDatabase {
     static async useConnection(conn){
       connection = conn;
-      await TransportDatabase.getNextFreeIndexInPositionsTable()
+
+      let index = await TransportDatabase.getNextFreeIndexInPositionsTable();
+      freeIndexInPositionsTable = (index == null) ? 0 : index + 1
     }
     constructor(){
         throw new Error("TransportDatabase is a static class!");
@@ -15,11 +17,12 @@ class TransportDatabase {
       return await executeQuery("SELECT * from gps_positions_archive");
     }
     static async getNextFreeIndexInPositionsTable(){
-      const result = await executeQuery("SELECT MAX(position_id) FROM gps_positions_archive");
-      console.log(result);
-      return result;
+      const results = await executeQuery("SELECT MAX(position_id) FROM gps_positions_archive AS solution");
+      console.log(results[0].solution);
+      return results[0].solution;
     }
     static async pushPositionsInPositionsTable(positions){
+      if (positions == null) return;
       let request = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
@@ -40,7 +43,9 @@ class TransportDatabase {
       }
       request = request.slice(0, -1);
 
-      await executeQuery(request);
+      let results = await executeQuery(request);
+      console.log(results);
+      //...
     }
 }
 
