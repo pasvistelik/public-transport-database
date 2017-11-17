@@ -54,8 +54,9 @@ class TransportDatabase {
 }
 
 async function executeQuery(query){
+  let connection = null;
   try{
-    let connection = mysql.createConnection(connConfig)
+    connection = mysql.createConnection(connConfig)
     connection.connect();
     var promise = new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
