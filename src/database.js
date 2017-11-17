@@ -1,10 +1,11 @@
-var connection = null;
+var connConfig = null;
+import mysql from 'mysql';
 
 var freeIndexInPositionsTable = 0;
 
 class TransportDatabase {
     static async useConnection(conn){
-      connection = conn;
+      connConfig = conn;
 
       let index = await TransportDatabase.getNextFreeIndexInPositionsTable();
       await TransportDatabase.getNextFreeIndexInPositionsTable();//...
@@ -54,6 +55,7 @@ class TransportDatabase {
 
 async function executeQuery(query){
   try{
+    let connection = mysql.createConnection(connConfig)
     connection.connect();
     var promise = new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
