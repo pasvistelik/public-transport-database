@@ -26,7 +26,7 @@ class TransportDatabase {
       return results[0].solution;
     }
     static async pushPositionsInPositionsTable(positions){
-      if (positions == null) return;
+      if (positions == null || positions.length === 0) return;
       let request = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
