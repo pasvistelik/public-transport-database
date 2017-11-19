@@ -28,7 +28,7 @@ class TransportDatabase {
     static async pushPositionsInPositionsTable(positions){
       if (positions == null || positions.length === 0) return;
       let request = "";
-      let request_begin = " INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
+      let request_begin = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
         request += request_begin + " ("
@@ -44,13 +44,13 @@ class TransportDatabase {
         + (currentItem.routeCode/*Id*/ == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode=\""+currentItem.routeCode/*Id*/+"\" LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "null" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "null" : currentItem.tripId)
-        + ");";
+        + "); ";
 
         if(currentItem.previousPositionId != null){
-          request += " UPDATE gps_positions_archive SET next_position_id="+currentItem.positionId+" WHERE position_id="+currentItem.previousPositionId+" LIMIT 1;";
+          request += "UPDATE gps_positions_archive SET next_position_id="+currentItem.positionId+" WHERE position_id="+currentItem.previousPositionId+" LIMIT 1; ";
         }
       }
-      //request = request.slice(0, -1);
+      request = request.slice(0, -1);
       //console.log(request);
 
       let results = await executeQuery(request);
