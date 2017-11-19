@@ -41,7 +41,7 @@ class TransportDatabase {
         + "\"" + currentItem.dateDDMMYY + "\", "
         + currentItem.dayOfWeek + ", "
         + currentItem.timeSeconds + ", "
-        + (currentItem.routeCode/*Id*/ == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeCode/*Id*/+"' LIMIT 1)") + ", "
+        + (currentItem.routeCode/*Id*/ == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode=\""+currentItem.routeCode/*Id*/+"\" LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "null" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "null" : currentItem.tripId)
         + ");";
