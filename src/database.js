@@ -32,9 +32,9 @@ class TransportDatabase {
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
         request += request_begin + " ("
-        + currentItem.positionId + ", "
-        + (currentItem.previousPositionId == null ? "null" : currentItem.previousPositionId) + ", "
-        + "null, "//(currentItem.nextPositionId == null ? "null" : currentItem.nextPositionId) + ", "
+        + (currentItem.positionId + freeIndexInPositionsTable) + ", "
+        + (currentItem.previousPositionId == null ? "null" : (currentItem.previousPositionId + freeIndexInPositionsTable)) + ", "
+        + "null, "//(currentItem.nextPositionId == null ? "null" : (currentItem.nextPositionId + freeIndexInPositionsTable)) + ", "
         + currentItem.lat + ", "
         + currentItem.lng + ", "
         + (currentItem.vehicleId == null ? "null" : currentItem.vehicleId) + ", "
@@ -47,7 +47,7 @@ class TransportDatabase {
         + "); ";
 
         if(currentItem.previousPositionId != null){
-          request += "UPDATE gps_positions_archive SET next_position_id="+currentItem.positionId+" WHERE position_id="+currentItem.previousPositionId+" LIMIT 1; ";
+          request += "UPDATE gps_positions_archive SET next_position_id="+(currentItem.positionId + freeIndexInPositionsTable)+" WHERE position_id="+(currentItem.previousPositionId + freeIndexInPositionsTable)+" LIMIT 1; ";
         }
       }
       request = request.slice(0, -1);
