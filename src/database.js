@@ -44,7 +44,7 @@ class TransportDatabase {
         + (currentItem.routeId == null ? "\"null\"" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeId+"' LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "\"null\"" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId)
-        + ");\n";
+        + "); ";
       }
       //request = request.slice(0, -1);
       //console.log(request);
