@@ -51,14 +51,14 @@ class TransportDatabase {
         }
       }
       request = request.slice(0, -1);
-      console.log("\n\nrequest:");
-      console.log(request);
-      console.log("\n\n");
+      //console.log("\n\nrequest:");
+      //console.log(request);
+      //console.log("\n\n");
 
       let results = await executeQuery(request);
-      console.log("\n\nresults: ");
-      console.log(results);
-      console.log("\n\n");
+      //console.log("\n\nresults: ");
+      //console.log(results);
+      //console.log("\n\n");
       //...
     }
 }
