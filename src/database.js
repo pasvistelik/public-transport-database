@@ -27,10 +27,11 @@ class TransportDatabase {
     }
     static async pushPositionsInPositionsTable(positions){
       if (positions == null || positions.length === 0) return;
-      let request = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
+      let request = "";
+      let request_begin = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
-        request += " ("
+        request += request_begin + " ("
         + currentItem.positionId + ", "
         + (currentItem.previousPositionId == null ? "\"null\"" : currentItem.previousPositionId) + ", "
         + (currentItem.nextPositionId == null ? "\"null\"" : currentItem.nextPositionId) + ", "
@@ -43,9 +44,9 @@ class TransportDatabase {
         + (currentItem.routeId == null ? "\"null\"" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeId+"' LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "\"null\"" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId)
-        + "),";
+        + ");\n";
       }
-      request = request.slice(0, -1);
+      //request = request.slice(0, -1);
       //console.log(request);
 
       let results = await executeQuery(request);
