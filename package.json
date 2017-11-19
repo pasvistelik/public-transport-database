@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "lib/database.js",
   "scripts": {
-    "build": "npm update && babel src --out-dir lib",
+    "build": "babel src --out-dir lib",
     "prepublish": "npm run build",
     "test": "npm run build && node lib/database.js"
   },

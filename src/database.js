@@ -8,8 +8,7 @@ class TransportDatabase {
       connConfig = conn;
 
       let index = await TransportDatabase.getNextFreeIndexInPositionsTable();
-      //await TransportDatabase.getNextFreeIndexInPositionsTable();//...
-      freeIndexInPositionsTable = index;//(index == null) ? 0 : index + 1
+      freeIndexInPositionsTable = index;
       console.log("freeIndexInPositionsTable = "+freeIndexInPositionsTable);
     }
     constructor(){
@@ -17,10 +16,10 @@ class TransportDatabase {
     }
     static async getPositionsArchive(){
       //...
-      return await executeQuery("SELECT * from gps_positions_archive");
+      return await executeQuery("SELECT * from `gps_positions_archive`");
     }
     static async getNextFreeIndexInPositionsTable(){
-      const results = await executeQuery("SELECT (SELECT MAX(position_id) FROM gps_positions_archive) AS solution");
+      const results = await executeQuery("SELECT (SELECT MAX(`position_id`) FROM `gps_positions_archive`) AS solution");
       console.log(results[0]);
       console.log(results[0].solution);
       return results[0].solution == null ? 0 : results[0].solution + 1;
@@ -28,26 +27,26 @@ class TransportDatabase {
     static async pushPositionsInPositionsTable(positions){
       if (positions == null || positions.length === 0) return;
       let request = "";
-      let request_begin = "INSERT INTO gps_positions_archive(position_id, previous_position_id, next_position_id, lat, lng, vehicle_id, date, day_of_week, time_seconds, route_id, way_id, trip_id) VALUES";
+      let request_begin = "INSERT INTO `gps_positions_archive`(`position_id`, `previous_position_id`, `next_position_id`, `lat`, `lng`, `vehicle_id`, `date`, `day_of_week`, `time_seconds`, `route_id`, `way_id`, `trip_id`) VALUES";
 
       for(let i = 0, n = positions.length, currentItem = positions[0]; i < n; currentItem = positions[++i]){
         request += request_begin + " ("
         + (currentItem.positionId + freeIndexInPositionsTable) + ", "
-        + (currentItem.previousPositionId == null ? "null" : (currentItem.previousPositionId + freeIndexInPositionsTable)) + ", "
-        + "null, "//(currentItem.nextPositionId == null ? "null" : (currentItem.nextPositionId + freeIndexInPositionsTable)) + ", "
+        + (currentItem.previousPositionId == null ? "NULL" : (currentItem.previousPositionId + freeIndexInPositionsTable)) + ", "
+        + "NULL, "//(currentItem.nextPositionId == null ? "null" : (currentItem.nextPositionId + freeIndexInPositionsTable)) + ", "
         + currentItem.lat + ", "
         + currentItem.lng + ", "
-        + (currentItem.vehicleId == null ? "null" : currentItem.vehicleId) + ", "
+        + (currentItem.vehicleId == null ? "NULL" : currentItem.vehicleId) + ", "
         + "\"" + currentItem.dateDDMMYY + "\", "
         + currentItem.dayOfWeek + ", "
         + currentItem.timeSeconds + ", "
-        + (currentItem.routeCode/*Id*/ == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode=\""+currentItem.routeCode/*Id*/+"\" LIMIT 1)") + ", "
-        + (currentItem.wayId == null ? "null" : currentItem.wayId) + ", "
-        + (currentItem.tripId == null ? "null" : currentItem.tripId)
+        + (currentItem.routeCode/*Id*/ == null ? "NULL" : "(SELECT `route_id` FROM `routes` WHERE `tmp_route_hashcode`=\""+currentItem.routeCode/*Id*/+"\" LIMIT 1)") + ", "
+        + (currentItem.wayId == null ? "NULL" : currentItem.wayId) + ", "
+        + (currentItem.tripId == null ? "NULL" : currentItem.tripId)
         + "); ";
 
         if(currentItem.previousPositionId != null){
-          request += "UPDATE gps_positions_archive SET next_position_id="+(currentItem.positionId + freeIndexInPositionsTable)+" WHERE position_id="+(currentItem.previousPositionId + freeIndexInPositionsTable)+" LIMIT 1; ";
+          request += "UPDATE `gps_positions_archive` SET `next_position_id`="+(currentItem.positionId + freeIndexInPositionsTable)+" WHERE `position_id`="+(currentItem.previousPositionId + freeIndexInPositionsTable)+" LIMIT 1; ";
         }
       }
       request = request.slice(0, -1);
