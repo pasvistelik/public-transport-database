@@ -40,16 +40,16 @@ class TransportDatabase {
         + "\"" + currentItem.dateDDMMYY + "\", "
         + currentItem.dayOfWeek + ", "
         + currentItem.timeSeconds + ", "
-        + (currentItem.routeId == null ? "\"null\"" : currentItem.routeId) + ", "
+        + (currentItem.routeId == null ? "\"null\"" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeId+"' LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "\"null\"" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "\"null\"" : currentItem.tripId)
         + "),";
       }
       request = request.slice(0, -1);
-      console.log(request);
+      //console.log(request);
 
       let results = await executeQuery(request);
-      console.log(results);
+      //console.log(results);
       //...
     }
 }
