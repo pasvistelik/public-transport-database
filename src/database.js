@@ -41,13 +41,13 @@ class TransportDatabase {
         + "\"" + currentItem.dateDDMMYY + "\", "
         + currentItem.dayOfWeek + ", "
         + currentItem.timeSeconds + ", "
-        + (currentItem.routeId == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeId+"' LIMIT 1)") + ", "
+        + (currentItem.routeId == null ? "null" : "(SELECT route_id FROM routes WHERE tmp_route_hashcode='"+currentItem.routeCode/*Id*/+"' LIMIT 1)") + ", "
         + (currentItem.wayId == null ? "null" : currentItem.wayId) + ", "
         + (currentItem.tripId == null ? "null" : currentItem.tripId)
         + "); ";
 
         if(currentItem.previousPositionId != null){
-          request += "UPDATE gps_positions_archive SET next_position_id="+currentItem.positionId+" WHERE position_id="+currentItem.previousPositionId+" LIMIT 1";
+          request += "UPDATE gps_positions_archive SET next_position_id="+currentItem.positionId+" WHERE position_id="+currentItem.previousPositionId+" LIMIT 1; ";
         }
       }
       //request = request.slice(0, -1);
