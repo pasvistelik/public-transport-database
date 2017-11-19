@@ -8,8 +8,8 @@ class TransportDatabase {
       connConfig = conn;
 
       let index = await TransportDatabase.getNextFreeIndexInPositionsTable();
-      await TransportDatabase.getNextFreeIndexInPositionsTable();//...
-      freeIndexInPositionsTable = (index == null) ? 0 : index + 1
+      //await TransportDatabase.getNextFreeIndexInPositionsTable();//...
+      freeIndexInPositionsTable = index;//(index == null) ? 0 : index + 1
       console.log("freeIndexInPositionsTable = "+freeIndexInPositionsTable);
     }
     constructor(){
@@ -20,10 +20,10 @@ class TransportDatabase {
       return await executeQuery("SELECT * from gps_positions_archive");
     }
     static async getNextFreeIndexInPositionsTable(){
-      const results = await executeQuery("SELECT MAX(position_id) FROM gps_positions_archive AS solution");
+      const results = await executeQuery("SELECT (SELECT MAX(position_id) FROM gps_positions_archive) AS solution");
       console.log(results[0]);
       console.log(results[0].solution);
-      return results[0].solution;
+      return results[0].solution == null ? 0 : results[0].solution + 1;
     }
     static async pushPositionsInPositionsTable(positions){
       if (positions == null || positions.length === 0) return;
@@ -51,10 +51,14 @@ class TransportDatabase {
         }
       }
       request = request.slice(0, -1);
-      //console.log(request);
+      console.log("\n\nrequest:");
+      console.log(request);
+      console.log("\n\n");
 
       let results = await executeQuery(request);
-      //console.log(results);
+      console.log("\n\nresults: ");
+      console.log(results);
+      console.log("\n\n");
       //...
     }
 }
@@ -66,15 +70,18 @@ async function executeQuery(query){
     connection.connect();
     var promise = new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
+        //console.log(results);
+        if (results) {
+          resolve(results);
+          return results;
+        }
         if (error) reject(error);
-        console.log(results);
-        resolve(results);
       });
     });
     return await promise;
   }
   catch(e){
-    console.log(e);
+    console.log(e.message);
     return null;
   }
   finally{
