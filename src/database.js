@@ -56,6 +56,7 @@ class TransportDatabase {
       //console.log("\n\n");
 
       let results = await executeQuery(request);
+      if(results == null) throw new Error();
       //console.log("\n\nresults: ");
       //console.log(results);
       //console.log("\n\n");
